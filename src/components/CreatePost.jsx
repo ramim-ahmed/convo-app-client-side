@@ -5,7 +5,9 @@ import { Button } from "./ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "@/axios/axios";
 import toast from "react-hot-toast";
+import useAuth from "@/hooks/useAuth";
 export default function CreatePost() {
+  const { authUser } = useAuth();
   const postTitleRef = useRef();
   const postContentRef = useRef();
   const queryClient = useQueryClient();
@@ -20,11 +22,9 @@ export default function CreatePost() {
   const handlePost = async () => {
     const data = {
       user: {
-        name: "Dawson",
-        email: "dawson@gmail.com" || "",
-        avatar:
-          "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" ||
-          "",
+        name: authUser?.displayName,
+        email: authUser?.email || "",
+        avatar: authUser?.photoURL || "",
       },
       title: postTitleRef.current.value,
       content: postContentRef.current.value,
