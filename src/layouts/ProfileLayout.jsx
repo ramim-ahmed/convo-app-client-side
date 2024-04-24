@@ -31,11 +31,6 @@ export default function ProfileLayout() {
             <p className="text-gray-800 text-sm text-center">
               {authUser?.email}
             </p>
-            <div className="flex justify-center mt-2">
-              <button className="bg-indigo-600 font-semibold text-white text-center px-5 py-1 ">
-                BATCH: 9
-              </button>
-            </div>
           </div>
           <div className="bg-white mt-4 border rounded-md p-4  mb-3 lg:mb-0">
             <Button variant="outline" className="w-full flex justify-between">

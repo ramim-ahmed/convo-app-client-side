@@ -12,7 +12,6 @@ export default function MyPosts() {
       return data?.data;
     },
   });
-
   return (
     <div>
       <div className="border rounded-md">
