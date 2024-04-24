@@ -1,3 +1,4 @@
+import PrivateRoute from "@/PrivateRoute/PrivateRoute";
 import MyPosts from "@/components/MyPosts";
 import ProfileLayout from "@/layouts/ProfileLayout";
 import RootLayout from "@/layouts/RootLayout";
@@ -15,7 +16,11 @@ const routes = createBrowserRouter([
       },
       {
         path: "/my-profile",
-        element: <ProfileLayout />,
+        element: (
+          <PrivateRoute>
+            <ProfileLayout />
+          </PrivateRoute>
+        ),
         children: [
           {
             index: true,

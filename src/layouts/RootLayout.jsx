@@ -7,7 +7,7 @@ export default function RootLayout() {
   useEffect(() => {
     setTimeout(() => {
       setDomLoaded(true);
-    }, 1000);
+    }, 2000);
   }, []);
   if (!domLoaded) {
     return (
