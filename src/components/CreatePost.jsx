@@ -6,10 +6,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "@/axios/axios";
 import toast from "react-hot-toast";
 import useAuth from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 export default function CreatePost() {
   const { authUser } = useAuth();
   const postTitleRef = useRef();
   const postContentRef = useRef();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { mutateAsync: addNewPost } = useMutation({
     mutationFn: async (data) => {
@@ -20,6 +22,9 @@ export default function CreatePost() {
     },
   });
   const handlePost = async () => {
+    if (!authUser) {
+      return navigate("/sign-in");
+    }
     const data = {
       user: {
         name: authUser?.displayName,

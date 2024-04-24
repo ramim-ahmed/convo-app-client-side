@@ -1,3 +1,5 @@
+import MyPosts from "@/components/MyPosts";
+import ProfileLayout from "@/layouts/ProfileLayout";
 import RootLayout from "@/layouts/RootLayout";
 import Home from "@/pages/Home";
 import SignIn from "@/pages/SignIn";
@@ -10,6 +12,16 @@ const routes = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+      },
+      {
+        path: "/my-profile",
+        element: <ProfileLayout />,
+        children: [
+          {
+            index: true,
+            element: <MyPosts />,
+          },
+        ],
       },
     ],
   },

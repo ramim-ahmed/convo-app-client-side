@@ -6,8 +6,12 @@ import { Button } from "./ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import PostAction from "./PostAction";
 import { useRef, useState } from "react";
+import useAuth from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 export default function Post({ post }) {
   const [editable, setEditable] = useState(false);
+  const navigate = useNavigate();
+  const { authUser } = useAuth();
   const updateTitleRef = useRef();
   const updateInputRef = useRef();
   const { _id, content, user, likes, createdAt, title } = post || {};
@@ -32,6 +36,9 @@ export default function Post({ post }) {
   });
 
   const handleAddLikePost = async () => {
+    if (!authUser) {
+      return navigate("/sign-in");
+    }
     try {
       await addLike();
       toast.success("Like Added!!");
@@ -42,6 +49,9 @@ export default function Post({ post }) {
 
   const handleUpdatePost = async (e) => {
     e.preventDefault();
+    if (!authUser) {
+      return navigate("/sign-in");
+    }
     const data = {
       title: updateTitleRef.current.value,
       content: updateInputRef.current.value,
