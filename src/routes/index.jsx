@@ -24,7 +24,11 @@ const routes = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <MyPosts />,
+            element: (
+              <PrivateRoute>
+                <MyPosts />
+              </PrivateRoute>
+            ),
           },
         ],
       },

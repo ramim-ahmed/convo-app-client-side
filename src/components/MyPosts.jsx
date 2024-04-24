@@ -8,10 +8,11 @@ export default function MyPosts() {
   const { data, isLoading } = useQuery({
     queryKey: ["Posts"],
     queryFn: async () => {
-      const data = await axios.get(`/posts/?email=${authUser?.email}`);
+      const data = await axios.get(`/posts/?email=${authUser?.email || ""}`);
       return data?.data;
     },
   });
+
   return (
     <div>
       <div className="border rounded-md">
@@ -22,7 +23,7 @@ export default function MyPosts() {
         ) : (
           data?.data.map((post) => <Post key={post._id} post={post} />)
         )}
-        {data?.length <= 0 && (
+        {data?.data?.length <= 0 && (
           <h1 className="text-xl text-center p-4">No Post</h1>
         )}
       </div>
