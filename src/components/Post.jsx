@@ -4,13 +4,27 @@ import TimeAgo from "./TimeAgo";
 import toast from "react-hot-toast";
 import { Button } from "./ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import PostAction from "./PostAction";
+import { useRef, useState } from "react";
 export default function Post({ post }) {
+  const [editable, setEditable] = useState(false);
+  const updateTitleRef = useRef();
+  const updateInputRef = useRef();
   const { _id, content, user, likes, createdAt, title } = post || {};
   const { name, avatar } = user || {};
   const queryClient = useQueryClient();
   const { mutateAsync: addLike } = useMutation({
     mutationFn: async () => {
       return await axios.patch(`/posts/add-like/${_id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["Posts"]);
+    },
+  });
+
+  const { mutateAsync: updateContent } = useMutation({
+    mutationFn: async (data) => {
+      return await axios.patch(`/posts/${_id}`, data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["Posts"]);
@@ -25,6 +39,23 @@ export default function Post({ post }) {
       toast.error(error.message);
     }
   };
+
+  const handleUpdatePost = async (e) => {
+    e.preventDefault();
+    const data = {
+      title: updateTitleRef.current.value,
+      content: updateInputRef.current.value,
+    };
+    try {
+      await updateContent(data);
+      toast.success("Post is updated successfully!!");
+      setEditable(false);
+    } catch (error) {
+      toast.error(error.message);
+      setEditable(false);
+    }
+  };
+
   return (
     <div className="border-b">
       <div className="bg-white p-6">
@@ -42,40 +73,30 @@ export default function Post({ post }) {
               </p>
             </div>
           </div>
-          {/* {authUser?.email === email && (
-          <PostAction
-            editable={editable}
-            setEditable={setEditable}
-            id={_id}
-          />
-        )} */}
+          <PostAction editable={editable} setEditable={setEditable} id={_id} />
         </div>
         <div className="py-5">
-          {/* {editable ? (
-          <form onSubmit={handleUpdatePost} className="space-y-2">
-            <input
-              ref={updateTitleRef}
-              type="text"
-              className="w-full px-5 py-2 rounded-md border border-black"
-              defaultValue={title}
-            />
-            <input
-              className="w-full px-5 py-2 rounded-md border border-black"
-              ref={updateInputRef}
-              defaultValue={content}
-            />
-            <input hidden type="submit" value="submit" />
-          </form>
-        ) : (
-          <div>
-            <h1 className="text-xl font-semibold">{title}</h1>
-            <p className="text-base mt-2 text-gray-600">{content}</p>
-          </div>
-        )} */}
-          <div>
-            <h1 className="text-xl font-semibold">{title}</h1>
-            <p className="text-base mt-2 text-gray-600">{content}</p>
-          </div>
+          {editable ? (
+            <form onSubmit={handleUpdatePost} className="space-y-2">
+              <input
+                ref={updateTitleRef}
+                type="text"
+                className="w-full px-5 py-2 rounded-md border border-black"
+                defaultValue={title}
+              />
+              <input
+                className="w-full px-5 py-2 rounded-md border border-black"
+                ref={updateInputRef}
+                defaultValue={content}
+              />
+              <input hidden type="submit" value="submit" />
+            </form>
+          ) : (
+            <div>
+              <h1 className="text-xl font-semibold">{title}</h1>
+              <p className="text-base mt-2 text-gray-600">{content}</p>
+            </div>
+          )}
         </div>
         <div>
           <Button onClick={() => handleAddLikePost()} variant="outline">
