@@ -15,7 +15,7 @@ export default function Post({ post }) {
   const updateTitleRef = useRef();
   const updateInputRef = useRef();
   const { _id, content, user, likes, createdAt, title } = post || {};
-  const { name, avatar } = user || {};
+  const { name, avatar, email } = user || {};
   const queryClient = useQueryClient();
   const { mutateAsync: addLike } = useMutation({
     mutationFn: async () => {
@@ -49,9 +49,7 @@ export default function Post({ post }) {
 
   const handleUpdatePost = async (e) => {
     e.preventDefault();
-    if (!authUser) {
-      return navigate("/sign-in");
-    }
+
     const data = {
       title: updateTitleRef.current.value,
       content: updateInputRef.current.value,
@@ -83,7 +81,13 @@ export default function Post({ post }) {
               </p>
             </div>
           </div>
-          <PostAction editable={editable} setEditable={setEditable} id={_id} />
+          {authUser?.email === email && (
+            <PostAction
+              editable={editable}
+              setEditable={setEditable}
+              id={_id}
+            />
+          )}
         </div>
         <div className="py-5">
           {editable ? (
