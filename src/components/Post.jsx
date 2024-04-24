@@ -1,0 +1,68 @@
+/* eslint-disable react/prop-types */
+import TimeAgo from "./TimeAgo";
+import { Button } from "./ui/button";
+
+export default function Post({ post }) {
+  const { content, user, likes, createdAt, title } = post || {};
+  const { name, avatar } = user || {};
+  return (
+    <div className="border-b">
+      <div className="bg-white p-6">
+        <div className="flex justify-between items-center">
+          <div className="flex space-x-4">
+            <img
+              className="w-12 h-12 object-cover rounded-full border border-indigo-700"
+              src={avatar}
+              alt=""
+            />
+            <div>
+              <h3 className="text-xl font-semibold">{name}</h3>
+              <p className=" text-sm text-gray-600">
+                <TimeAgo date={createdAt} />
+              </p>
+            </div>
+          </div>
+          {/* {authUser?.email === email && (
+          <PostAction
+            editable={editable}
+            setEditable={setEditable}
+            id={_id}
+          />
+        )} */}
+        </div>
+        <div className="py-5">
+          {/* {editable ? (
+          <form onSubmit={handleUpdatePost} className="space-y-2">
+            <input
+              ref={updateTitleRef}
+              type="text"
+              className="w-full px-5 py-2 rounded-md border border-black"
+              defaultValue={title}
+            />
+            <input
+              className="w-full px-5 py-2 rounded-md border border-black"
+              ref={updateInputRef}
+              defaultValue={content}
+            />
+            <input hidden type="submit" value="submit" />
+          </form>
+        ) : (
+          <div>
+            <h1 className="text-xl font-semibold">{title}</h1>
+            <p className="text-base mt-2 text-gray-600">{content}</p>
+          </div>
+        )} */}
+          <div>
+            <h1 className="text-xl font-semibold">{title}</h1>
+            <p className="text-base mt-2 text-gray-600">{content}</p>
+          </div>
+        </div>
+        <div>
+          <Button variant="outline">
+            {likes} {likes > 1 ? "Likes" : "Like"}
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
