@@ -1,10 +1,30 @@
 /* eslint-disable react/prop-types */
+import axios from "@/axios/axios";
 import TimeAgo from "./TimeAgo";
+import toast from "react-hot-toast";
 import { Button } from "./ui/button";
-
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 export default function Post({ post }) {
-  const { content, user, likes, createdAt, title } = post || {};
+  const { _id, content, user, likes, createdAt, title } = post || {};
   const { name, avatar } = user || {};
+  const queryClient = useQueryClient();
+  const { mutateAsync: addLike } = useMutation({
+    mutationFn: async () => {
+      return await axios.patch(`/posts/add-like/${_id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["Posts"]);
+    },
+  });
+
+  const handleAddLikePost = async () => {
+    try {
+      await addLike();
+      toast.success("Like Added!!");
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   return (
     <div className="border-b">
       <div className="bg-white p-6">
@@ -58,7 +78,7 @@ export default function Post({ post }) {
           </div>
         </div>
         <div>
-          <Button variant="outline">
+          <Button onClick={() => handleAddLikePost()} variant="outline">
             {likes} {likes > 1 ? "Likes" : "Like"}
           </Button>
         </div>
