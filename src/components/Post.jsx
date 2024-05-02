@@ -103,7 +103,7 @@ export default function Post({ post }) {
                 ref={updateInputRef}
                 defaultValue={content}
               />
-              <input hidden type="submit" value="submit" />
+              <Button type="submit">Update now</Button>
             </form>
           ) : (
             <div>
