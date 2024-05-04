@@ -6,9 +6,11 @@ import Post from "./Post";
 export default function MyPosts() {
   const { authUser } = useAuth();
   const { data, isLoading } = useQuery({
-    queryKey: ["Posts"],
+    queryKey: ["posts"],
     queryFn: async () => {
-      const data = await axios.get(`/posts/?email=${authUser?.email || ""}`);
+      const data = await axios.get(
+        `/posts/my-posts/?email=${authUser?.email || ""}`
+      );
       return data?.data;
     },
   });
