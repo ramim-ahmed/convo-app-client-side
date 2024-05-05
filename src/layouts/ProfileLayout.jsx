@@ -8,7 +8,10 @@ export default function ProfileLayout() {
   const { data, isLoading } = useQuery({
     queryKey: ["Posts"],
     queryFn: async () => {
-      const data = await axios.get(`/posts/?email=${authUser?.email}`);
+      const data = await axios.get(
+        `/posts/my-posts/?email=${authUser?.email}`,
+        { withCredentials: true }
+      );
       return data?.data;
     },
   });

@@ -1,14 +1,11 @@
-import axios from "@/axios/axios";
 import { Button } from "@/components/ui/button";
 import useAuth from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 export default function SignIn() {
-  const navigate = useNavigate();
   const { signInUser } = useAuth();
+  const navigate = useNavigate();
   const handleSignInUser = async () => {
     await signInUser();
-    const { data } = await axios.get("/posts/token");
-    console.log(data);
     navigate("/");
   };
   return (

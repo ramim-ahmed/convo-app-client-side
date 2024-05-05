@@ -8,6 +8,8 @@ import {
   signOut,
 } from "firebase/auth";
 import "../firebase";
+import toast from "react-hot-toast";
+import axios from "@/axios/axios";
 export const AuthContext = createContext();
 export default function AuthProvider({ children }) {
   const [authUser, setAuthUser] = useState(null);
@@ -16,11 +18,21 @@ export default function AuthProvider({ children }) {
   const signInUser = async () => {
     const provider = new GoogleAuthProvider();
     const auth = getAuth();
-    await signInWithPopup(auth, provider);
-    const user = auth.currentUser;
-    setAuthUser({
-      ...user,
-    });
+    try {
+      await signInWithPopup(auth, provider);
+      const user = auth.currentUser;
+      setAuthUser({
+        ...user,
+      });
+      const userData = {
+        name: user?.displayName,
+        email: user?.email,
+        avatar: user?.photoURL,
+      };
+      await axios.post("/posts/token", userData, { withCredentials: true });
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   //logout user
