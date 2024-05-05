@@ -2,7 +2,7 @@
 
 Live site:
 
-- [CONVO APP](https://convo-app-client-side.vercel.app/)
+- [CONVO APP](https://convo-app-one.vercel.app/)
 
 Features ✨:
 
